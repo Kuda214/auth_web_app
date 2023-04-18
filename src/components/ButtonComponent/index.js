@@ -2,11 +2,18 @@ import './styles';
 import { useStyles } from './styles';
 import { Button } from '@mui/material';
 
-const ButtonComponent = ({btnName, btnSize, onClick}) => {
+const ButtonComponent = ({btnName, btnSize, onClick, disabled}) => {
     const classes = useStyles();
 
     return (
-        <Button onClick={onClick} variant='contained' size={btnSize} className={classes.formButton}> {btnName} </Button>
+        <Button 
+            disabled={disabled} 
+            onClick={onClick} 
+            variant='contained' 
+            size={btnSize} 
+            className={classes.formButton}> 
+            {btnName} 
+        </Button>
     );
 
 }

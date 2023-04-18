@@ -1,9 +1,9 @@
 const Colors = {
    
     primary: {
-        main: '#ff6600',
+        main: '#f08c30',
         light: '#ffa366',
-        dark: '#f26202',
+        dark: '#d47a28',
         contrastText: '#ffd1b3',
     },
     secondary: {

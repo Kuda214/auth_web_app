@@ -15,9 +15,13 @@
 
 .loginContainer{
     width: 35vw;
-    height : 50vh;
+    height : 75vh;
     background-color: rgba(255,255 , 255, 0.6);
     border-radius: 15px;
+    justify-content: center;
+    align-items: center;
+    display: flex;
+    flex-direction: column;
 }
 
 .containerTitle{
@@ -42,14 +46,15 @@
 
 .errorText{
     color: red;
-    font-size: 16px;
+    font-size: 14px;
     margin: 0;
     padding: 0;
 }
 
-.passText{
-    color: green;
-    font-size: 16px;
-    margin: 0;
-    padding: 0;
+.btnAction{
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    
 }

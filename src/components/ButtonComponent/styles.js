@@ -10,6 +10,7 @@ export const useStyles = makeStyles((theme) => ({
             color: '#FFFFFF',
         },  
         width: '20vw',
-        height: '6vh',
+        height: '8vh',
+        marginTop: '5vh',
     },
 }));

@@ -5,6 +5,7 @@ import { useState, useEffect  } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Button } from '@mui/material';
 import { makeStyles } from '@mui/styles';
+import CircularProgress from '@mui/material/CircularProgress';
 
 const Login = () =>{
 
@@ -12,6 +13,8 @@ const Login = () =>{
     const [ password, setPassword ] = useState('');
     const [ emailError, setEmailError ] = useState(false);
     const [ passwordError, setPasswordError ] = useState(false);
+    const [isLoading, setIsLoading] = useState(false);
+
 
     const navigate = useNavigate();
     // const classes = useStyles();
@@ -19,11 +22,17 @@ const Login = () =>{
 
     const login = () => {
         
-        
+     
         if(validateEmail() && validatePassword())
         {
             //navigate to home page
-            navigate('/home');
+            setIsLoading(true);
+            setTimeout(() => {
+              setIsLoading(false);
+              navigate('/home');
+
+            }, 2000);
+            
         }
         else
         {
@@ -40,6 +49,7 @@ const Login = () =>{
 
         }
     }
+
 
     const handlePasswordChange = (event) => {
         setPassword(event.target.value);
@@ -102,14 +112,24 @@ const Login = () =>{
                             txtOnChange={handlePasswordChange}
                             isRequired={true}
                         />
-                        <p className='errorText'>{passwordError ? 'Please enter a valid password. Password should be (Minimum 8 characters length, at least 1 Capital letter, at least 1 number, atleast 1 special character)' : ''}</p>
+                        <p className='errorText'>{passwordError ? 'Please enter a valid Password' : ''}</p> 
+                        <p className='errorText'>{passwordError ? '8 chars min, Atleast 1 Num, ' : ''}</p>
+                        <p className='errorText'>{passwordError ? '1 Special char, 1 Caps, 1 small letter ' : ''}</p>
+
 
                         <br/>
                         <br/>
 
-                        <ButtonComponent onClick={login} btnName={"Login"} btnSize={"large"} variant='contained'  />
-                        {/* <Button onClick={() => login()} variant='contained' size={'Large'} > Login </Button> */}
+                        <div className='btnAction'>
+                            {isLoading ? <CircularProgress size={24} /> : null }
 
+                            <ButtonComponent onClick={login} 
+                                btnName={  "Login"} 
+                                btnSize={"large"} 
+                                variant='contained'  
+                                disabled={isLoading}
+                            />
+                        </div>
                     </div>
                 </form>
 
