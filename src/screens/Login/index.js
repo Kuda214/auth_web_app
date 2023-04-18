@@ -6,14 +6,19 @@ import { useNavigate } from 'react-router-dom';
 import { Button } from '@mui/material';
 import { makeStyles } from '@mui/styles';
 import CircularProgress from '@mui/material/CircularProgress';
+import store from '../../ReduxStore/store';
+import { setEmailAndPassword } from '../../ReduxStore/authSlice';
+
 
 const Login = () =>{
 
-    const [email, setEmail ] = useState('');
-    const [ password, setPassword ] = useState('');
+    const [inputEmail, setInputEmail ] = useState('');
+    const [ inputPassword, setInputPassword ] = useState('');
     const [ emailError, setEmailError ] = useState(false);
     const [ passwordError, setPasswordError ] = useState(false);
     const [isLoading, setIsLoading] = useState(false);
+    const [isError, setIsError] = useState(false);
+    const { email, password } = store.getState().auth;
 
 
     const navigate = useNavigate();
@@ -25,14 +30,24 @@ const Login = () =>{
      
         if(validateEmail() && validatePassword())
         {
-            //navigate to home page
-            setIsLoading(true);
-            setTimeout(() => {
-              setIsLoading(false);
-              navigate('/home');
+            //navigate to home page if credentials are correct
+           
+            if(inputEmail == "darryn@randrtechsa.com" && inputPassword == "P@55w0rd@1")
+            {
+                store.dispatch(setEmailAndPassword({ inputEmail, inputPassword }));
+                setIsError(false);
+                setIsLoading(true);
+                setTimeout(() => {
+                setIsLoading(false);
+                navigate('/home');
 
-            }, 2000);
-            
+                }, 2000);
+            }
+            else
+            {
+                setIsError(true);
+            }
+                
         }
         else
         {
@@ -52,7 +67,7 @@ const Login = () =>{
 
 
     const handlePasswordChange = (event) => {
-        setPassword(event.target.value);
+        setInputPassword(event.target.value);
 
         //check if all rules apply 
         if (validatePassword()) {
@@ -66,7 +81,7 @@ const Login = () =>{
     }
 
     const handleEmailChange = (event) => {
-        setEmail(event.target.value);
+        setInputEmail(event.target.value);
 
         //check if all rules apply
         if (validateEmail()) {
@@ -80,18 +95,20 @@ const Login = () =>{
 
     const validateEmail = () => {
         var re = /\S+@\S+\.\S+/;
-        return re.test(email);
+        return re.test(inputEmail);
     }
 
     const validatePassword = () => {
         var re = /^(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[!@#$%^&*]).{8,}$/;
-        return re.test(password);
+        return re.test(inputPassword);
     }
 
     return (
         <div className="container">
             <div className="loginContainer">
                 <h1 className='containerTitle'>Login</h1>
+
+                <p className='errorText'> {isError ? 'Wrong credentials, Please try again' : null}</p>
 
                 <form className='formContainer' >
                     <div className='formGroup'>
