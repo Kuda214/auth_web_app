@@ -4,13 +4,24 @@ import Colors from '../../Colors/index.js';
 export const useStyles = makeStyles((theme) => ({
     formButton: {
         backgroundColor: Colors.primary.main,
-        color: '#FFFFFF',
+        color: Colors.primary.white,
         '&:hover': {
             backgroundColor: Colors.primary.dark,
-            color: '#FFFFFF',
+            color: Colors.primary.white,
         },  
         width: '20vw',
-        height: '8vh',
-        marginTop: '5vh',
+        height: 'vh',
+        marginTop: '8vh',
     },
+    formButtonMobile:{
+        backgroundColor: Colors.primary.main,
+        color: Colors.primary.white,
+        '&:hover': {
+            backgroundColor: Colors.primary.dark,
+            color: Colors.primary.white,
+        },  
+        width: '90vw',
+        height: 'vh',
+        marginTop: '8vh',
+    }
 }));

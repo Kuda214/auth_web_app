@@ -24,6 +24,19 @@
     flex-direction: column;
 }
 
+.loginContainerMobile
+{
+    width:95vw;
+    height : 75vh;
+    background-color: rgba(255,255 , 255, 0.2);
+    border-radius: 15px;
+    justify-content: left;
+    align-items: left;
+    display: flex;
+    flex-direction: column;
+}
+
+
 .containerTitle{
     font-size: 36px;
     font-weight: bold;
@@ -36,6 +49,14 @@
     display: flex;
     justify-content: center;
     align-items: center;
+    width: 100%;
+}
+
+.formContainerMobile{
+    flex-direction: column;
+    display: flex;
+    justify-content:first baseline;
+    align-items: start;
 }
 
 .formGroup{

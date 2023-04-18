@@ -1,10 +1,14 @@
 const Colors = {
    
     primary: {
-        main: '#f08c30',
-        light: '#ffa366',
-        dark: '#d47a28',
+        main: '#ff9500',
+        light: '#ff9900',
+        dark: '#c97908',
         contrastText: '#ffd1b3',
+        black: '#000000',
+        white: '#ffffff',
+        red: '#ff0000',
+        grey: '#808080',
     },
     secondary: {
         main: '#00ffff',

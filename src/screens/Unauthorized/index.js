@@ -1,7 +1,9 @@
+import './styles.css'
+
 const Unauthorized = () => {
     return (
         <div>
-        <h1>Unauthorized</h1>
+        <h1 className="errorTextMsg">Unauthorized</h1>
         </div>
     );
 }

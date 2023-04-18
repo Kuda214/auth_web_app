@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React from 'react';
 import AppBar from '@material-ui/core/AppBar';
 import Toolbar from '@material-ui/core/Toolbar';
 import Typography from '@material-ui/core/Typography';
@@ -17,11 +17,8 @@ function NavBar({activeBtnId}) {
     return (
         
         <div className={classes.root}>
-        <AppBar position="static"  touchRippleProps={{ delay: 100 }}>
+        <AppBar position="static">
         <Toolbar className={classes.toolbar}>
-            <Typography variant="h4">
-                auth_web_app
-            </Typography>
             <div>
             <Button onClick={()=> navigate('/home')} className={activeBtnId === 1 ? classes.activeBtn : classes.unActiveBtn} >Home</Button>
             <Button onClick={()=> navigate('/account')} className={activeBtnId ===1 ? classes.unActiveBtn : classes.activeBtn} >Account</Button>

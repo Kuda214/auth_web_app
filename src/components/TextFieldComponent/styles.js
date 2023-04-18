@@ -12,4 +12,14 @@ export const useStyles = makeStyles((theme) => ({
         width: '20vw',
         height: '8vh'
     },
+    formTextFieldMobile: {
+        borderColor: Colors.primary.main,
+        color: '#FFFFFF',
+        '&:hover': {
+            borderColor: Colors.primary.dark,
+            color: '#FFFFFF',
+        },  
+        width: '90vw',
+        height: '8vh'
+    },
 }));

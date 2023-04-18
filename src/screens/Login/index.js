@@ -3,11 +3,11 @@ import ButtonComponent from '../../components/ButtonComponent';
 import TextFieldComponent from '../../components/TextFieldComponent';
 import { useState, useEffect  } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { Button } from '@mui/material';
-import { makeStyles } from '@mui/styles';
 import CircularProgress from '@mui/material/CircularProgress';
 import store from '../../ReduxStore/store';
-import { setEmailAndPassword } from '../../ReduxStore/authSlice';
+import { setEmailAndPassword ,resetAuthState} from '../../ReduxStore/authSlice';
+import { useMediaQuery } from '@material-ui/core';
+
 
 
 const Login = () =>{
@@ -18,23 +18,28 @@ const Login = () =>{
     const [ passwordError, setPasswordError ] = useState(false);
     const [isLoading, setIsLoading] = useState(false);
     const [isError, setIsError] = useState(false);
-    const { email, password } = store.getState().auth;
+    const isMobile = useMediaQuery('(max-width: 600px)');
 
 
     const navigate = useNavigate();
-    // const classes = useStyles();
 
+    useEffect(() => {
+        store.dispatch(resetAuthState());
+    }, []);
 
     const login = () => {
         
-     
-        if(validateEmail() && validatePassword())
+        
+        if(validateEmail(inputEmail) && validatePassword(inputPassword))
         {
+            setEmailError(false);
+            setPasswordError(false);
             //navigate to home page if credentials are correct
            
-            if(inputEmail == "darryn@randrtechsa.com" && inputPassword == "P@55w0rd@1")
+            if(inputEmail === "darryn@randrtechsa.com" && inputPassword === "P@55w0rd@1")
             {
-                store.dispatch(setEmailAndPassword({ inputEmail, inputPassword }));
+                const isValid = true;
+                store.dispatch(setEmailAndPassword({ email: inputEmail, password: inputPassword, isValid: isValid }));
                 setIsError(false);
                 setIsLoading(true);
                 setTimeout(() => {
@@ -56,10 +61,17 @@ const Login = () =>{
             {
                 setEmailError(true);
             }
+            else{
+                setEmailError(false);
+            }
 
             if(!validatePassword())
             {
                 setPasswordError(true);
+            }
+            else
+            {
+                setPasswordError(false);
             }
 
         }
@@ -67,10 +79,10 @@ const Login = () =>{
 
 
     const handlePasswordChange = (event) => {
-        setInputPassword(event.target.value);
 
         //check if all rules apply 
-        if (validatePassword()) {
+        if (validatePassword(event.target.value)) {
+            setInputPassword(event.target.value);
             setPasswordError(false);
         }
         else
@@ -81,10 +93,10 @@ const Login = () =>{
     }
 
     const handleEmailChange = (event) => {
-        setInputEmail(event.target.value);
-
+        console.log(inputEmail);
         //check if all rules apply
-        if (validateEmail()) {
+        if (validateEmail(event.target.value)) {
+            setInputEmail(event.target.value);
             setEmailError(false);
         }
         else
@@ -93,66 +105,128 @@ const Login = () =>{
         }
     }
 
-    const validateEmail = () => {
+    const validateEmail = (e) => {
         var re = /\S+@\S+\.\S+/;
-        return re.test(inputEmail);
+        return re.test(e);
     }
 
-    const validatePassword = () => {
+    const validatePassword = (e) => {
         var re = /^(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[!@#$%^&*]).{8,}$/;
-        return re.test(inputPassword);
+        return re.test(e);
     }
 
-    return (
-        <div className="container">
-            <div className="loginContainer">
-                <h1 className='containerTitle'>Login</h1>
+    if (isMobile) {
+        return(
+            <div className="container">
+                <div className="loginContainerMobile">
+                    <h1 className='containerTitle'>Login</h1>
 
-                <p className='errorText'> {isError ? 'Wrong credentials, Please try again' : null}</p>
+                    <p className='errorText'> {isError ? 'Wrong credentials, Please try again' : null}</p>
 
-                <form className='formContainer' >
-                    <div className='formGroup'>
-                        <TextFieldComponent 
-                            txtLabel={'Email'}
-                            txtType={'email'}
-                            txtOnChange =  {handleEmailChange}
-                            isRequired={true}
-                        />
-                        <p className='errorText'>{emailError ? 'Please enter a valid email' : ''}</p>
-
-                        <br/>
-                        <br/>
-
-                        <TextFieldComponent 
-                            txtLabel={'Password'}
-                            txtxType={'password'}
-                            txtOnChange={handlePasswordChange}
-                            isRequired={true}
-                        />
-                        <p className='errorText'>{passwordError ? 'Please enter a valid Password' : ''}</p> 
-                        <p className='errorText'>{passwordError ? '8 chars min, Atleast 1 Num, ' : ''}</p>
-                        <p className='errorText'>{passwordError ? '1 Special char, 1 Caps, 1 small letter ' : ''}</p>
-
-
-                        <br/>
-                        <br/>
-
-                        <div className='btnAction'>
-                            {isLoading ? <CircularProgress size={24} /> : null }
-
-                            <ButtonComponent onClick={login} 
-                                btnName={  "Login"} 
-                                btnSize={"large"} 
-                                variant='contained'  
-                                disabled={isLoading}
+                    <form className='formContainerMobile' >
+                        <div className='formGroup'>
+                            <TextFieldComponent 
+                                txtLabel={'Email'}
+                                txtType={'email'}
+                                txtOnChange =  {handleEmailChange}
+                                isRequired={true}
+                                isMobile={true}
                             />
-                        </div>
-                    </div>
-                </form>
+                            <p className='errorText'>{emailError ? 'Please enter a valid email' : ''}</p>
 
+                            <br/>
+                            <br/>
+
+                            <TextFieldComponent 
+                                txtLabel={'Password'}
+                                txtxType={'password'}
+                                txtOnChange={handlePasswordChange}
+                                isRequired={true}
+                                isMobile={true}
+                            />
+                            <p className='errorText'>{passwordError ? 'Please enter a valid Password' : ''}</p> 
+                            <p className='errorText'>{passwordError ? '8 chars min, Atleast 1 Num, ' : ''}</p>
+                            <p className='errorText'>{passwordError ? '1 Special char, 1 Caps, 1 small letter ' : ''}</p>
+
+
+                            <br/>
+                            <br/>
+
+                            <div className='btnAction'>
+                                {isLoading ? <CircularProgress size={24} /> : null }
+
+                                <ButtonComponent onClick={login} 
+                                    btnName={  "Login"} 
+                                    btnSize={"large"} 
+                                    variant='contained'  
+                                    disabled={isLoading}
+                                    isMobile={true}
+                                />
+                            </div>
+                        </div>
+                    </form>
+
+                </div>
             </div>
-        </div>
-    );
+        );
+    }
+    else
+    {
+
+        return (
+            <div className="container">
+                <div className="loginContainer">
+                    <h1 className='containerTitle'>Login</h1>
+
+                    <p className='errorText'> {isError ? 'Wrong credentials, Please try again' : null}</p>
+
+                    <form className='formContainer' >
+                        <div className='formGroup'>
+                            <TextFieldComponent 
+                                txtLabel={'Email'}
+                                txtType={'email'}
+                                txtOnChange =  {handleEmailChange}
+                                isRequired={true}
+                                isMobile={false}
+                            />
+                            <p className='errorText'>{emailError ? 'Please enter a valid email' : ''}</p>
+
+                            <br/>
+                            <br/>
+
+                            <TextFieldComponent 
+                                txtLabel={'Password'}
+                                txtxType={'password'}
+                                txtOnChange={handlePasswordChange}
+                                isRequired={true}
+                                isMobile={false}
+                            />
+                            <p className='errorText'>{passwordError ? 'Please enter a valid Password' : ''}</p> 
+                            <p className='errorText'>{passwordError ? '8 chars min, Atleast 1 Num, ' : ''}</p>
+                            <p className='errorText'>{passwordError ? '1 Special char, 1 Caps, 1 small letter ' : ''}</p>
+
+
+                            <br/>
+                            <br/>
+
+                            <div className='btnAction'>
+                                {isLoading ? <CircularProgress size={24} /> : null }
+
+                                <ButtonComponent onClick={login} 
+                                    btnName={  "Login"} 
+                                    btnSize={"large"} 
+                                    variant='contained'  
+                                    disabled={isLoading}
+                                    isMobile={false}
+                                />
+                            </div>
+                        </div>
+                    </form>
+
+                </div>
+            </div>
+        );
+    }
 }
 
 export default Login;
