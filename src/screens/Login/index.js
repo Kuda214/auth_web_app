@@ -8,28 +8,75 @@ import { makeStyles } from '@mui/styles';
 
 const Login = () =>{
 
-    const { email, setEmail } = useState('');
-    const { password, setPassword } = useState('');
-    const { loginSuccess, setLoginSuccess } = useState('');
+    const [email, setEmail ] = useState('');
+    const [ password, setPassword ] = useState('');
+    const [ emailError, setEmailError ] = useState(false);
+    const [ passwordError, setPasswordError ] = useState(false);
+
     const navigate = useNavigate();
     // const classes = useStyles();
 
 
     const login = () => {
-        console.log('login');
-        console.log('email: ' + email);
-        console.log('password: ' + password);
-
-
-        navigate('/home');
         
+        
+        if(validateEmail() && validatePassword())
+        {
+            //navigate to home page
+            navigate('/home');
+        }
+        else
+        {
+            //show error message
+            if(!validateEmail())    
+            {
+                setEmailError(true);
+            }
+
+            if(!validatePassword())
+            {
+                setPasswordError(true);
+            }
+
+        }
     }
 
-    // useEffect(() => {
-    //     navigate('/home');
-    // }, [true]);
+    const handlePasswordChange = (event) => {
+        setPassword(event.target.value);
 
+        //check if all rules apply 
+        if (validatePassword()) {
+            setPasswordError(false);
+        }
+        else
+        {
+            setPasswordError(true);
+        }
 
+    }
+
+    const handleEmailChange = (event) => {
+        setEmail(event.target.value);
+
+        //check if all rules apply
+        if (validateEmail()) {
+            setEmailError(false);
+        }
+        else
+        {
+            setEmailError(true);
+        }
+    }
+
+    const validateEmail = () => {
+        var re = /\S+@\S+\.\S+/;
+        return re.test(email);
+    }
+
+    const validatePassword = () => {
+        var re = /^(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[!@#$%^&*]).{8,}$/;
+        return re.test(password);
+    }
 
     return (
         <div className="container">
@@ -41,9 +88,10 @@ const Login = () =>{
                         <TextFieldComponent 
                             txtLabel={'Email'}
                             txtType={'email'}
-                            txtOnChange =  {setEmail}
+                            txtOnChange =  {handleEmailChange}
                             isRequired={true}
                         />
+                        <p className='errorText'>{emailError ? 'Please enter a valid email' : ''}</p>
 
                         <br/>
                         <br/>
@@ -51,9 +99,11 @@ const Login = () =>{
                         <TextFieldComponent 
                             txtLabel={'Password'}
                             txtxType={'password'}
-                            txtOnChange={setPassword}
+                            txtOnChange={handlePasswordChange}
                             isRequired={true}
                         />
+                        <p className='errorText'>{passwordError ? 'Please enter a valid password. Password should be (Minimum 8 characters length, at least 1 Capital letter, at least 1 number, atleast 1 special character)' : ''}</p>
+
                         <br/>
                         <br/>
 
